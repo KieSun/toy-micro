@@ -1,0 +1,43 @@
+{
+  "name": "toy-mirco",
+  "version": "1.0.0",
+  "description": "微前端轮子",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "clean": "rm -rf ./dist",
+    "build": "yarn clean && tsc",
+    "prepare": "yarn build",
+    "check-types": "tsc --noEmit",
+    "check-formatting": "prettier --check '**/*.{js,json,md,tsx,ts}'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KieSun/toy-mirco.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KieSun/toy-mirco/issues"
+  },
+  "homepage": "https://github.com/KieSun/toy-mirco#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "lint-staged": "^11.1.2",
+    "prettier": "^2.3.2",
+    "typescript": "^4.3.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,md,tsx,ts}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}
