@@ -1,12 +1,12 @@
 {
-  "name": "toy-mirco",
+  "name": "toy-micro",
   "version": "1.0.0",
   "description": "微前端轮子",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "clean": "rm -rf ./dist",
-    "build": "yarn clean && tsc",
+    "build": "yarn clean && tsc -w",
     "prepare": "yarn build",
     "check-types": "tsc --noEmit",
     "check-formatting": "prettier --check '**/*.{js,json,md,tsx,ts}'"
