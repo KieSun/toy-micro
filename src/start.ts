@@ -1,6 +1,7 @@
 import { getAppList, setAppList } from './appList'
 import { setLifeCycle } from './lifeCycle'
 import { IAppInfo, ILifeCycle } from './types'
+import { hijackRoute } from './route'
 
 export const registerMicroApps = (appList: IAppInfo[], lifeCycle?: ILifeCycle) => {
   setAppList(appList);
@@ -12,4 +13,6 @@ export const start = () => {
   if (!list.length) {
     throw new Error('请先注册应用')
   }
+
+  hijackRoute()
 };

@@ -12,3 +12,5 @@ export interface ILifeCycle {
 }
 
 export type LifeCycle = (app: IAppInfo) => Promise<any>
+
+export type EventType = 'hashchange' | 'popstate'

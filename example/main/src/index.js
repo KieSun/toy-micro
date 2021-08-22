@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { registerMicroApps } from '../../../dist'
+import { registerMicroApps, start } from '../../../dist'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -22,3 +22,4 @@ const appList = [
 
 
 registerMicroApps(appList)
+start()

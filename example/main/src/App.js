@@ -1,13 +1,30 @@
-import logo from './logo.svg';
+import {
+  BrowserRouter as Router,
+  Link
+} from "react-router-dom";
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <div id='micro-container' />
-      </header>
+      <Router>
+        <div>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/about">About</Link>
+              </li>
+              <li>
+                <Link to="/users">Users</Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </Router>
+      <div id='micro-container' />
     </div>
   );
 }
