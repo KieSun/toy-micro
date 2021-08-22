@@ -16,19 +16,15 @@ let lastUrl: string | null = null
 
 export const reroute = (url: string) => {
   if (url !== lastUrl) {
-    const { loads, mounts, unmounts } = getAppListStatus()
+    const { actives, unmounts } = getAppListStatus()
     Promise.all(
       unmounts
         .map(async (app) => {
           await unmounted(app)
         })
         .concat(
-          loads.map(async (app) => {
+          actives.map(async (app) => {
             await beforeLoad(app)
-          })
-        )
-        .concat(
-          mounts.map(async (app) => {
             await mounted(app)
           })
         )
