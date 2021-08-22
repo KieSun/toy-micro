@@ -39,5 +39,8 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "dependencies": {
+    "path-to-regexp": "^6.2.0"
   }
 }

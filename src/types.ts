@@ -1,8 +1,17 @@
+import { AppStatus } from './enum'
+
 export interface IAppInfo {
   name: string
   entry: string
   container: string
   activeRule: string
+}
+
+export interface IInternalAppInfo extends IAppInfo {
+  status: AppStatus
+  bootstrap?: LifeCycle
+  mount?: LifeCycle
+  unmount?: LifeCycle
 }
 
 export interface ILifeCycle {
