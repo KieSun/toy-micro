@@ -14,35 +14,35 @@ export const getLifeCycle = () => {
 
 export const beforeLoad = async (app: IInternalAppInfo) => {
   app.status = AppStatus.NOT_LOADED
-  await runLifeCycle('beforeLoad', app);
+  await runLifeCycle('beforeLoad', app)
 
-  const childrenApp = await loadHTML(app);
+  const childrenApp = await loadHTML(app)
   app.status = AppStatus.LOADED
-  await childrenApp.bootstrap?.(app);
+  await childrenApp.bootstrap?.(app)
 
-  return childrenApp;
-};
+  return childrenApp
+}
 
 export const mounted = async (app: IInternalAppInfo) => {
   app.status = AppStatus.NOT_MOUNTED
-  await app.mount?.(app);
+  await app.mount?.(app)
   app.status = AppStatus.MOUNTED
-  await runLifeCycle('mounted', app);
+  await runLifeCycle('mounted', app)
   return app
-};
+}
 
 export const unmounted = async (app: IInternalAppInfo) => {
   app.status = AppStatus.UNMOUNTING
-  await app.unmount?.(app);
+  await app.unmount?.(app)
   app.status = AppStatus.NOT_MOUNTED
-  await runLifeCycle('unmounted', app);
+  await runLifeCycle('unmounted', app)
   return app
-};
+}
 
 const runLifeCycle = async (name: keyof ILifeCycle, app: IAppInfo) => {
   const fn = lifeCycle[name]
   if (fn instanceof Array) {
-    await Promise.all(fn.map(item => item(app)))
+    await Promise.all(fn.map((item) => item(app)))
   } else {
     await fn?.(app)
   }

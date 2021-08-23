@@ -1,8 +1,5 @@
-import {
-  BrowserRouter as Router,
-  Link
-} from "react-router-dom";
-import './App.css';
+import { BrowserRouter as Router, Link } from 'react-router-dom'
+import './App.css'
 
 function App() {
   return (
@@ -15,18 +12,15 @@ function App() {
                 <Link to="/">Home</Link>
               </li>
               <li>
-                <Link to="/about">About</Link>
-              </li>
-              <li>
-                <Link to="/users">Users</Link>
+                <Link to="/vue">vue</Link>
               </li>
             </ul>
           </nav>
         </div>
       </Router>
-      <div id='micro-container' />
+      <div id="micro-container" />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

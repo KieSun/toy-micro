@@ -1,12 +1,15 @@
 import { getAppList, setAppList } from './appList'
 import { setLifeCycle } from './lifeCycle'
 import { IAppInfo, ILifeCycle } from './types'
-import { hijackRoute } from './route'
+import { hijackRoute, reroute } from './route'
 
-export const registerMicroApps = (appList: IAppInfo[], lifeCycle?: ILifeCycle) => {
-  setAppList(appList);
-  lifeCycle && setLifeCycle(lifeCycle);
-};
+export const registerMicroApps = (
+  appList: IAppInfo[],
+  lifeCycle?: ILifeCycle
+) => {
+  setAppList(appList)
+  lifeCycle && setLifeCycle(lifeCycle)
+}
 
 export const start = () => {
   const list = getAppList()
@@ -15,4 +18,5 @@ export const start = () => {
   }
 
   hijackRoute()
-};
+  reroute(window.location.href)
+}

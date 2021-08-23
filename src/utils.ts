@@ -9,6 +9,7 @@ export const getAppListStatus = () => {
 
   const list = getAppList() as IInternalAppInfo[]
   list.forEach((app) => {
+    app.status = app.status || AppStatus.NOT_LOADED
     const isActive = match(app.activeRule, { end: false })(location.pathname)
     switch (app.status) {
       case AppStatus.NOT_LOADED:
@@ -23,4 +24,8 @@ export const getAppListStatus = () => {
   })
 
   return { actives, unmounts }
+}
+
+export const fetchResource = (url: string) => {
+  return fetch(url).then(async (res) => await res.text())
 }
