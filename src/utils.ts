@@ -29,3 +29,14 @@ export const getAppListStatus = () => {
 export const fetchResource = (url: string) => {
   return fetch(url).then(async (res) => await res.text())
 }
+
+export function getCompletionURL(src: string | null, baseURI: string) {
+  if (!src) return src
+  if (/^(https|http)/.test(src)) return src
+
+  return new URL(src, getCompletionBaseURL(baseURI)).toString()
+}
+
+export function getCompletionBaseURL(url: string) {
+  return url.startsWith('//') ? `${location.protocol}${url}` : url
+}

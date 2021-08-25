@@ -1,5 +1,6 @@
 import { IInternalAppInfo } from '../types'
 import { fetchResource } from '../utils'
+import { parseHTML } from './parse'
 
 export const loadHTML = async (app: IInternalAppInfo) => {
   const { container, entry } = app
@@ -11,9 +12,19 @@ export const loadHTML = async (app: IInternalAppInfo) => {
     throw new Error('容器不存在')
   }
 
-  dom.innerHTML = htmlFile
-  const scripts = await getJS(htmlFile, entry)
-  scripts.forEach((script) => {
+  const fakeContainer = document.createElement('div')
+  fakeContainer.innerHTML = htmlFile
+  const { scripts, links, inlineScript } = parseHTML(fakeContainer, app)
+
+  dom.innerHTML = fakeContainer.innerHTML
+
+  await Promise.all(links.map((link) => fetchResource(link)))
+
+  const jsCode = (
+    await Promise.all(scripts.map((script) => fetchResource(script)))
+  ).concat(inlineScript)
+
+  jsCode.forEach((script) => {
     const lifeCycle = runJS(script, app)
     console.log(lifeCycle)
     // app.bootstrap = lifeCycle.bootstrap
@@ -22,45 +33,6 @@ export const loadHTML = async (app: IInternalAppInfo) => {
   })
 
   return app
-}
-
-const fetchLogic = async (src: string, entry?: string) => {
-  let file
-  if (src.startsWith('http')) {
-    file = await fetchResource(src)
-  } else {
-    file = await fetchResource(`http://${entry}/${src}`)
-  }
-  return file
-}
-
-const getJS = async (html: string, entry: string) => {
-  const div = document.createElement('div')
-  div.innerHTML = html
-
-  const arr = []
-  const scripts = div.querySelectorAll('script')
-  const links = div.querySelectorAll('link')
-
-  for (let i = 0; i < scripts.length; i++) {
-    const script = scripts[i]
-    const src = script.getAttribute('src')
-    if (src) {
-      arr.push(await fetchLogic(src, entry))
-    } else {
-      arr.push(script.innerHTML)
-    }
-  }
-
-  for (let i = 0; i < links.length; i++) {
-    const link = links[i]
-    const src = link.getAttribute('src')
-    if (src && src.endsWith('.js')) {
-      arr.push(await fetchLogic(src, entry))
-    }
-  }
-
-  return arr
 }
 
 const runJS = (value: string, app: IInternalAppInfo) => {
