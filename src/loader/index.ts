@@ -26,10 +26,11 @@ export const loadHTML = async (app: IInternalAppInfo) => {
 
   jsCode.forEach((script) => {
     const lifeCycle = runJS(script, app)
-    console.log(lifeCycle)
-    // app.bootstrap = lifeCycle.bootstrap
-    // app.mount = lifeCycle.mount
-    // app.unmount = lifeCycle.unmount
+    if (lifeCycle) {
+      app.bootstrap = lifeCycle.bootstrap
+      app.mount = lifeCycle.mount
+      app.unmount = lifeCycle.unmount
+    }
   })
 
   return app

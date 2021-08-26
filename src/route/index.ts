@@ -15,6 +15,7 @@ let historyEvent: PopStateEvent | null = null
 let lastUrl: string | null = null
 
 export const reroute = (url: string) => {
+  console.log(url, lastUrl)
   if (url !== lastUrl) {
     const { actives, unmounts } = getAppListStatus()
     Promise.all(
@@ -29,10 +30,10 @@ export const reroute = (url: string) => {
           })
         )
     ).then(() => {
-      callCapturedListeners()
+      // callCapturedListeners()
     })
-    lastUrl = url
   }
+  lastUrl = url || location.href
 }
 
 const handleUrlChange = () => {
@@ -43,11 +44,13 @@ export const hijackRoute = () => {
   window.history.pushState = (...args) => {
     originalPush.apply(window.history, args)
     historyEvent = new PopStateEvent('popstate')
+    console.log(args[2], '=======================')
     args[2] && reroute(args[2])
   }
   window.history.replaceState = (...args) => {
     originalReplace.apply(window.history, args)
     historyEvent = new PopStateEvent('popstate')
+    console.log(args[2], '========================')
     args[2] && reroute(args[2])
   }
 
@@ -91,4 +94,9 @@ export function callCapturedListeners() {
     })
     historyEvent = null
   }
+}
+
+export function cleanCapturedListeners() {
+  capturedListeners['hashchange'] = []
+  capturedListeners['popstate'] = []
 }
