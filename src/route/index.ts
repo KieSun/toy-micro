@@ -7,6 +7,10 @@ const capturedListeners: Record<EventType, Function[]> = {
   popstate: [],
 }
 
+// 劫持和 history 和 hash 相关的事件和函数
+// 然后我们在劫持的方法里做一些自己的事情
+// 比如说在 URL 发生改变的时候判断当前是否切换了子应用
+
 const originalPush = window.history.pushState
 const originalReplace = window.history.replaceState
 
@@ -15,7 +19,6 @@ let historyEvent: PopStateEvent | null = null
 let lastUrl: string | null = null
 
 export const reroute = (url: string) => {
-  console.log(url, lastUrl)
   if (url !== lastUrl) {
     const { actives, unmounts } = getAppListStatus()
     Promise.all(
@@ -30,7 +33,7 @@ export const reroute = (url: string) => {
           })
         )
     ).then(() => {
-      // callCapturedListeners()
+      callCapturedListeners()
     })
   }
   lastUrl = url || location.href
@@ -44,13 +47,11 @@ export const hijackRoute = () => {
   window.history.pushState = (...args) => {
     originalPush.apply(window.history, args)
     historyEvent = new PopStateEvent('popstate')
-    console.log(args[2], '=======================')
     args[2] && reroute(args[2])
   }
   window.history.replaceState = (...args) => {
     originalReplace.apply(window.history, args)
     historyEvent = new PopStateEvent('popstate')
-    console.log(args[2], '========================')
     args[2] && reroute(args[2])
   }
 

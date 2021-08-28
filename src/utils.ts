@@ -2,6 +2,8 @@ import { match } from 'path-to-regexp'
 import { getAppList } from './appList'
 import { IInternalAppInfo } from './types'
 import { AppStatus } from './enum'
+import { importEntry } from 'import-html-entry'
+import { getCache, setCache } from './cache'
 
 export const getAppListStatus = () => {
   const actives: IInternalAppInfo[] = []
@@ -26,8 +28,11 @@ export const getAppListStatus = () => {
   return { actives, unmounts }
 }
 
-export const fetchResource = (url: string) => {
-  return fetch(url).then(async (res) => await res.text())
+export const fetchResource = async (url: string, appName: string) => {
+  if (getCache(appName, url)) return getCache(appName, url)
+  const data = await fetch(url).then(async (res) => await res.text())
+  setCache(appName, url, data)
+  return data
 }
 
 export function getCompletionURL(src: string | null, baseURI: string) {
@@ -39,4 +44,14 @@ export function getCompletionURL(src: string | null, baseURI: string) {
 
 export function getCompletionBaseURL(url: string) {
   return url.startsWith('//') ? `${location.protocol}${url}` : url
+}
+
+export const prefetch = async (app: IInternalAppInfo) => {
+  requestIdleCallback(async () => {
+    const { getExternalScripts, getExternalStyleSheets } = await importEntry(
+      app.entry
+    )
+    requestIdleCallback(getExternalStyleSheets)
+    requestIdleCallback(getExternalScripts)
+  })
 }

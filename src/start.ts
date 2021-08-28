@@ -1,7 +1,9 @@
 import { getAppList, setAppList } from './appList'
 import { setLifeCycle } from './lifeCycle'
-import { IAppInfo, ILifeCycle } from './types'
+import { IAppInfo, IInternalAppInfo, ILifeCycle } from './types'
 import { hijackRoute, reroute } from './route'
+import { AppStatus } from './enum'
+import { prefetch } from './utils'
 
 export const registerMicroApps = (
   appList: IAppInfo[],
@@ -19,4 +21,10 @@ export const start = () => {
 
   hijackRoute()
   reroute(window.location.href)
+
+  list.forEach((app) => {
+    if ((app as IInternalAppInfo).status === AppStatus.NOT_LOADED) {
+      prefetch(app as IInternalAppInfo)
+    }
+  })
 }

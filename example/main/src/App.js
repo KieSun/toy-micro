@@ -9,7 +9,7 @@ function App() {
           <nav>
             <ul>
               <li>
-                <Link to="/react">Home</Link>
+                <Link to="/">Home</Link>
               </li>
               <li>
                 <Link to="/vue">vue</Link>

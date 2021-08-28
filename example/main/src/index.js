@@ -16,13 +16,7 @@ const appList = [
     name: 'vue',
     activeRule: '/vue',
     container: '#micro-container',
-    entry: '//localhost:8080',
-  },
-  {
-    name: 'react',
-    activeRule: '/react',
-    container: '#micro-container',
-    entry: '//localhost:8084',
+    entry: 'http://localhost:8080',
   },
 ]
 

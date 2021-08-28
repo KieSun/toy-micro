@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/KieSun/toy-mirco#readme",
   "devDependencies": {
+    "@types/requestidlecallback": "^0.3.4",
     "eslint": "^7.32.0",
     "eslint-plugin-prettier": "^3.4.0",
     "lint-staged": "^11.1.2",
@@ -41,6 +42,7 @@
     ]
   },
   "dependencies": {
+    "import-html-entry": "^1.11.1",
     "path-to-regexp": "^6.2.0"
   }
 }
