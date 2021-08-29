@@ -1,5 +1,6 @@
 import { IInternalAppInfo } from '../types'
 import { importEntry } from 'import-html-entry'
+import { ProxySandbox } from './sandbox'
 
 export const loadHTML = async (app: IInternalAppInfo) => {
   const { container, entry } = app
@@ -30,9 +31,17 @@ export const loadHTML = async (app: IInternalAppInfo) => {
 }
 
 const runJS = (value: string, app: IInternalAppInfo) => {
+  if (!app.proxy) {
+    app.proxy = new ProxySandbox()
+    // @ts-ignore
+    window.__CURRENT_PROXY__ = app.proxy.proxy
+  }
+  app.proxy.active()
   const code = `
-    ${value}
-    return window['${app.name}']
+    return (window => {
+      ${value}
+      return window['${app.name}']
+    })(window.__CURRENT_PROXY__)
   `
-  return new Function(code).call(window, window)
+  return new Function(code)()
 }

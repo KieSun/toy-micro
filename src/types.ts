@@ -12,6 +12,7 @@ export interface IInternalAppInfo extends IAppInfo {
   bootstrap?: LifeCycle
   mount?: LifeCycle
   unmount?: LifeCycle
+  proxy: any
 }
 
 export interface ILifeCycle {

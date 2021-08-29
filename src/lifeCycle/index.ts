@@ -33,6 +33,7 @@ export const mounted = async (app: IInternalAppInfo) => {
 
 export const unmounted = async (app: IInternalAppInfo) => {
   app.status = AppStatus.UNMOUNTING
+  app.proxy.inactive()
   await app.unmount?.(app)
   app.status = AppStatus.NOT_MOUNTED
   await runLifeCycle('unmounted', app)
