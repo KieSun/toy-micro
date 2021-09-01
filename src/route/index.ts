@@ -1,5 +1,10 @@
 import { EventType } from '../types'
-import { beforeLoad, mounted, unmounted } from '../lifeCycle'
+import {
+  runBoostrap,
+  runBeforeLoad,
+  runMounted,
+  runUnmounted,
+} from '../lifeCycle'
 import { getAppListStatus } from '../utils'
 
 const capturedListeners: Record<EventType, Function[]> = {
@@ -24,12 +29,13 @@ export const reroute = (url: string) => {
     Promise.all(
       unmounts
         .map(async (app) => {
-          await unmounted(app)
+          await runUnmounted(app)
         })
         .concat(
           actives.map(async (app) => {
-            await beforeLoad(app)
-            await mounted(app)
+            await runBeforeLoad(app)
+            await runBoostrap(app)
+            await runMounted(app)
           })
         )
     ).then(() => {

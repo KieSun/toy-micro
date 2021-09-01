@@ -8,7 +8,11 @@ let app
 export const bootstrap = () => {
   app = new Vue({
     render: (h) => h(App),
-  }).$mount('#app')
+  })
+}
+
+export const mount = () => {
+  app.$mount('#app')
 }
 
 export const unmount = () => {
