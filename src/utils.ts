@@ -14,7 +14,9 @@ export const getAppListStatus = () => {
     const isActive = match(app.activeRule, { end: false })(location.pathname)
     switch (app.status) {
       case AppStatus.NOT_LOADED:
+      case AppStatus.LOADING:
       case AppStatus.LOADED:
+      case AppStatus.BOOTSTRAPPING:
       case AppStatus.NOT_MOUNTED:
         isActive && actives.push(app)
         break
