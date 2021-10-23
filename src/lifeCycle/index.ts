@@ -40,6 +40,14 @@ export const runUnmounted = async (app: IInternalAppInfo) => {
   app.status = AppStatus.UNMOUNTING
   app.proxy.inactive()
   await app.unmount?.(app)
+  
+  // 从 main app 上删除 sub app 挂载点的dom
+  const { container } = app;
+  const containerDom = document.querySelector(container);
+  if (containerDom) {
+    containerDom.innerHTML = '';
+  }
+
   app.status = AppStatus.NOT_MOUNTED
   await runLifeCycle('unmounted', app)
 }
